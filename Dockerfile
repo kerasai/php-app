@@ -1,13 +1,6 @@
-FROM php:7.3-apache-stretch
+FROM php:7.3-fpm
 
-ENV APP_DIR /var/www/app
-ENV APACHE_DOCUMENT_ROOT ${APP_DIR}/web
-
-WORKDIR $APP_DIR
-
-ARG DEBIAN_FRONTEND=noninteractive
-
-RUN apt-get update -y && apt-get install -y libzip-dev libpng-dev mysql-client
+RUN apt-get update -y && apt-get install -y libzip-dev libpng-dev default-mysql-client
 
 RUN docker-php-ext-install bcmath gd mysqli opcache pdo_mysql zip
 
@@ -20,8 +13,4 @@ RUN { \
 		echo 'opcache.fast_shutdown=1'; \
 	} > /usr/local/etc/php/conf.d/opcache-recommended.ini
 
-# Apache config.
-RUN rm -rf /etc/apache2/sites-enabled/*
-ADD vhosts/*.conf /etc/apache2/sites-enabled/
-RUN sed -i "s#__DOCROOT__#${APACHE_DOCUMENT_ROOT}#g" /etc/apache2/sites-enabled/app.conf && \
-    a2enmod rewrite headers && service apache2 restart
+WORKDIR /code
