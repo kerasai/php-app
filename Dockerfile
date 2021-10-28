@@ -7,7 +7,7 @@ WORKDIR $APP_DIR
 
 ARG DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update -y && apt-get install -y libzip-dev libpng-dev mysql-client
+RUN apt-get update -y && apt-get install -y libzip-dev libpng-dev mariadb-client
 
 RUN docker-php-ext-install bcmath gd mysqli opcache pdo_mysql zip
 
