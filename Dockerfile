@@ -1,4 +1,4 @@
-FROM php:7.3-apache-stretch
+FROM php:7.4-apache
 
 ENV APP_DIR /var/www/app
 ENV APACHE_DOCUMENT_ROOT ${APP_DIR}/web
