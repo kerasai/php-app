@@ -1,9 +1,6 @@
-FROM php:7.4-apache
+FROM php:8.0-apache
 
-ENV APP_DIR /var/www/app
-ENV APACHE_DOCUMENT_ROOT ${APP_DIR}/web
-
-WORKDIR $APP_DIR
+WORKDIR /code
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -26,6 +23,16 @@ RUN { \
 
 # Apache config.
 RUN rm -rf /etc/apache2/sites-enabled/*
-ADD vhosts/*.conf /etc/apache2/sites-enabled/
-RUN sed -i "s#__DOCROOT__#${APACHE_DOCUMENT_ROOT}#g" /etc/apache2/sites-enabled/app.conf && \
-    a2enmod rewrite headers && service apache2 restart
+
+RUN { \
+                echo '<VirtualHost *:80>'; \
+                echo '    ServerAdmin webmaster@localhost'; \
+                echo '    DocumentRoot /var/www/html'; \
+                echo '    ServerName localhost'; \
+                echo '    <Directory "/var/www/html/">'; \
+                echo '		AllowOverride all'; \
+                echo '    </Directory>'; \
+                echo '</VirtualHost>'; \
+        } > /etc/apache2/sites-available/app.conf
+
+RUN a2enmod rewrite headers && a2ensite app && service apache2 restart
