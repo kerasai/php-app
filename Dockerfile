@@ -1,10 +1,10 @@
-FROM php:8.0-apache
+FROM php:8.1-apache
 
 WORKDIR /code
 
 ARG DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update -y && apt-get install -y libzip-dev libpng-dev mariadb-client
+RUN apt-get update -y && apt-get install -y libzip-dev libpng-dev mariadb-client && apt clean
 
 RUN docker-php-ext-install bcmath gd mysqli opcache pdo_mysql zip
 
