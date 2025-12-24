@@ -5,3 +5,7 @@ docker push kerasai/php-app:8.1-apache
 
 rm -rf /var/www/html
 ln -s /code/web /var/www/html
+
+docker run -d -p 8080:80 --name appserver kerasai/php-app:8.1-apache
+docker exec -it appserver bash
+docker kill appserver
