@@ -25,14 +25,15 @@ RUN { \
 RUN rm -rf /etc/apache2/sites-enabled/*
 
 RUN { \
-                echo '<VirtualHost *:80>'; \
-                echo '    ServerAdmin webmaster@localhost'; \
-                echo '    DocumentRoot /var/www/html'; \
-                echo '    ServerName localhost'; \
-                echo '    <Directory "/var/www/html/">'; \
-                echo '		AllowOverride all'; \
-                echo '    </Directory>'; \
-                echo '</VirtualHost>'; \
-        } > /etc/apache2/sites-available/app.conf
+        echo '<VirtualHost *:80>'; \
+        echo '    ServerAdmin webmaster@localhost'; \
+        echo '    DocumentRoot /var/www/html'; \
+        echo '    ServerName localhost'; \
+        echo '    <Directory "/var/www/html/">'; \
+        echo '		AllowOverride all'; \
+        echo '    </Directory>'; \
+        echo '</VirtualHost>'; \
+        } > /etc/apache2/sites-available/app.conf && \
+  echo '<html><head><title>Page Title</title></head><body><h1>Hello, World!</h1><p>This is a basic HTML page.</p></body></html>' > /var/www/html/index.html
 
 RUN a2enmod rewrite headers && a2ensite app && service apache2 restart
